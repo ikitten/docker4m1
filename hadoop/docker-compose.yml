@@ -1,0 +1,84 @@
+## Install:
+##   sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+#
+# 第一步先创建网络
+# 安装docker基础环境
+# 安装docker-compose
+# 第二步先创建网络
+# docker network create --subnet=172.100.0.0/24 hadoopnet
+# 第三步
+# docker-compose up -d --build
+#
+
+version: '3.2'
+services:
+  ## mangosrv
+  ## 运行已编译好的镜像
+  mysql:
+    image: "taxue/mysql:5.5.62-ubuntu.14.04.1.aarch64"
+    ports:
+      - "3306:3306"
+    networks:
+      - hadoopnet
+    volumes:
+      - ./mysql01.hadoop.com:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: 'hive'
+      MYSQL_ROOT_PASSWORD: 'hive'
+      TZ: '+08:00'
+      MYSQL_TCP_PORT: '3306'
+    hostname: mysql01.hadoop.com
+    container_name: mysql01.hadoop.com
+
+  nginx01:
+    image: "nginx:1.19.6"
+    ports:
+      - "8042:8042"
+      - "8088:8088"
+      - "9870:9870"
+    networks:
+      - hadoopnet
+    volumes:
+      - ./nginx01.hadoop.com/logs:/var/log/nginx
+      - ./nginx01.hadoop.com/conf.d:/etc/nginx/conf.d
+    hostname: nginx01.hadoop.com
+    container_name: nginx01.hadoop.com
+
+  master:
+    image: "taxue/hadoop:3.3.0"
+    hostname: master.hadoop.com
+    container_name: master.hadoop.com
+    command: master
+    ports:
+      - "22:22"
+    volumes:
+      - ./wordcount:/root/code
+    networks:
+      - hadoopnet
+
+  slave1:
+    image: "taxue/hadoop:3.3.0"
+    hostname: slave1.hadoop.com
+    container_name: slave1.hadoop.com
+    networks:
+      - hadoopnet
+
+  slave2:
+    image: "taxue/hadoop:3.3.0"
+    hostname: slave2.hadoop.com
+    container_name: slave2.hadoop.com
+    networks:
+      - hadoopnet
+
+#  hive:
+#    image: "taxue/hadoop:3.3.0"
+#    hostname: hive.hadoop.com
+#    container_name: hive.hadoop.com
+#    mem_limit: 4096m
+#    networks:
+#      - hadoopnet
+
+networks:
+  hadoopnet:
+    external: true
