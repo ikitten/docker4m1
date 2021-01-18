@@ -37,11 +37,14 @@ services:
       - "8042:8042"
       - "8088:8088"
       - "9870:9870"
+      - "19888:19888"
     networks:
       - hadoopnet
     volumes:
       - ./nginx01.hadoop.com/logs:/var/log/nginx
       - ./nginx01.hadoop.com/conf.d:/etc/nginx/conf.d
+    environment:
+      TZ: '+08:00'
     hostname: nginx01.hadoop.com
     container_name: nginx01.hadoop.com
 

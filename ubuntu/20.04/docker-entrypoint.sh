@@ -28,6 +28,9 @@ if [ "$1" = 'master' ]; then
 	done
 
 	$HADOOP_PATH/sbin/start-all.sh
+
+	sleep 10
+	$HADOOP_PATH/bin/hadoop dfsadmin -safemode leave
 fi
 
 while : ; do sleep 1; done

@@ -19,14 +19,19 @@
 <configuration>
         <!-- 指定HDFS中NameNode的地址 -->
         <property>
-            <name>fs.defaultFS</name>
-            <value>hdfs://master.hadoop.com:9000</value>
+		<name>fs.defaultFS</name>
+		<value>hdfs://master.hadoop.com:9000</value>
         </property>
 
         <!-- 指定Hadoop运行时产生文件的存储目录 -->
         <property>
-            <name>hadoop.tmp.dir</name>
-            <value>file:/usr/local/hadoop/dfs/tmp</value>
-            <description>Abase for other temporary directories.</description>
+		<name>hadoop.tmp.dir</name>
+		<value>file:/usr/local/hadoop/dfs/tmp</value>
+		<description>Abase for other temporary directories.</description>
         </property>
+
+	<property>
+		<name>dfs.permissions</name>
+		<value>false</value>
+	</property>
 </configuration>

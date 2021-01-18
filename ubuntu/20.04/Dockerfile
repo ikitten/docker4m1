@@ -6,12 +6,13 @@ FROM ubuntu:20.04
 RUN mkdir /docker-entrypoint-initdb.d
 
 RUN apt-get update && apt-get install -y openssh-server 
-#RUN apt-get install -y vim
+RUN apt-get install -y vim net-tools iputils-ping tcpdump
 
 RUN mkdir /root/.ssh 							\
 	&& ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa			\
 	&& cat /root/.ssh/id_rsa.pub > /root/.ssh/authorized_keys	\
-	&& echo "StrictHostKeyChecking no" > /etc/ssh/ssh_config.d/hadoop.conf
+	&& echo "StrictHostKeyChecking no" > /etc/ssh/ssh_config.d/hadoop.conf \
+	&& cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 COPY jdk-8u271-linux-aarch64.tar.gz hadoop-3.3.0-aarch64.tar.gz /root
 
