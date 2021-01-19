@@ -30,6 +30,10 @@ services:
       MYSQL_TCP_PORT: '3306'
     hostname: mysql01.hadoop.com
     container_name: mysql01.hadoop.com
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
 
   nginx01:
     image: "nginx:1.19.6"
@@ -47,6 +51,10 @@ services:
       TZ: '+08:00'
     hostname: nginx01.hadoop.com
     container_name: nginx01.hadoop.com
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
 
   master:
     image: "taxue/hadoop:3.3.0"
@@ -66,6 +74,10 @@ services:
     container_name: slave1.hadoop.com
     networks:
       - hadoopnet
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
 
   slave2:
     image: "taxue/hadoop:3.3.0"
@@ -73,14 +85,23 @@ services:
     container_name: slave2.hadoop.com
     networks:
       - hadoopnet
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
 
-#  hive:
-#    image: "taxue/hadoop:3.3.0"
-#    hostname: hive.hadoop.com
-#    container_name: hive.hadoop.com
-#    mem_limit: 4096m
-#    networks:
-#      - hadoopnet
+  hive:
+    image: "taxue/hadoop:3.3.0"
+    hostname: hive.hadoop.com
+    container_name: hive.hadoop.com
+    mem_limit: 4096m
+    networks:
+      - hadoopnet
+    command: hive
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
 
 networks:
   hadoopnet:
