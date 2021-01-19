@@ -37,7 +37,7 @@ fi
 if [ "$1" = 'hive' ]; then
 	echo 'Running hive'
 	if [ ! -d "$HIVE_HOME/init" ]; then
-		touch $HIVE_HOME/init
+		mkdir $HIVE_HOME/init
 		echo 'Hive init process in progress...'
 		$HIVE_HOME/bin/schematool -dbType mysql -initSchema
 

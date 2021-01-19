@@ -47,6 +47,8 @@ services:
     volumes:
       - ./nginx01.hadoop.com/logs:/var/log/nginx
       - ./nginx01.hadoop.com/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - hive
     environment:
       TZ: '+08:00'
     hostname: nginx01.hadoop.com
@@ -61,6 +63,9 @@ services:
     hostname: master.hadoop.com
     container_name: master.hadoop.com
     command: master
+    depends_on:
+      - slave1
+      - slave2
     ports:
       - "22:22"
     volumes:
@@ -98,6 +103,9 @@ services:
     networks:
       - hadoopnet
     command: hive
+    depends_on:
+      - mysql
+      - master
     deploy:
       resources:
         limits:
